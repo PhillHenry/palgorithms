@@ -21,5 +21,8 @@ class AdjacencyListGraphSpec extends WordSpec with Matchers {
   def checkConnectedGraphFor(adjacencyList: Array[Array[VertexId]]): Unit =
     adjacencyList foreach { associated =>
       associated.length should be > 0
+      associated foreach { vertexId =>
+        vertexId should be >= 0L
+      }
     }
 }

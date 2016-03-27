@@ -1,18 +1,21 @@
 package uk.co.odinconsultants.graph.impl
 
+import uk.co.odinconsultants.graph.Graph
+
 import scala.annotation.tailrec
 
-class AdjacencyListGraph[@specialized(Int, Long)T](adjacencyList: Array[Array[T]]) {
+class AdjacencyListGraph(private [AdjacencyListGraph] val adjacencyList: Array[Array[VertexId]]) extends Graph {
 
+  override def neighboursOf(vertexId: VertexId): Seq[VertexId] = adjacencyList(vertexId.toInt)
 
-
+  override def numberOfVertices: Long = adjacencyList.length.toLong
 }
 
 object AdjacencyListGraph {
 
 
-  def apply(edges: Seq[Edge]): AdjacencyListGraph[VertexId] = {
-    new AdjacencyListGraph[VertexId](mappings(edges))
+  def apply(edges: Seq[Edge]): AdjacencyListGraph = {
+    new AdjacencyListGraph(mappings(edges))
   }
 
   def mappings(edges: Seq[Edge]): Array[Array[VertexId]] = {
@@ -42,7 +45,9 @@ object AdjacencyListGraph {
     asArray
   }
 
+  def asString(graph: AdjacencyListGraph): String = asString(graph.adjacencyList)
+
   def asString(adjacencyList: Array[Array[VertexId]]): String =
-    adjacencyList.map(x => if (x == null) "null" else "[" + x.mkString(", ") + "]").mkString("\n")
+    adjacencyList.zipWithIndex.map(x => x._2 + " -> " + (if (x._1 == null) "null" else "[" + x._1.mkString(", ") + "]")).mkString("\n") + "\n"
 
 }
