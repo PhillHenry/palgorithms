@@ -7,11 +7,11 @@ import scala.collection.mutable.ArrayBuffer
 
 object GraphGenerator {
 
-  type ComponentFn[T] = Seq[VertexId] => Seq[Edge]
+  type ComponentFn = Seq[VertexId] => Seq[Edge]
 
   def and[T](t: T): T = identity(t)
 
-  def componentsConnectedBy[T](t: T): ComponentFn[T] = { vertices =>
+  def stronglyConnectedComponents: ComponentFn = { vertices =>
     vertices.zip(vertices.drop(1)).map{ case(from, to) =>
       val edge: Edge = (from, to)
       edge
@@ -27,13 +27,13 @@ object GraphGenerator {
     vertices.toSet
   }
 
-  def makeASCCGraphWith[T](n: Int, intraComponentFn: ComponentFn[T], interComponentFn: ComponentFn[T]): (Seq[VertexId], Seq[Edge]) = {
+  def makeAGraphWith[T](n: Int, intraComponentFn: ComponentFn, interComponentFn: ComponentFn): (Seq[VertexId], Seq[Edge]) = {
     val leaders = (2 to n + 1).map(pow(_, 2).toLong)
     val edges   = intraComponentFn(leaders) ++ interComponentFn(leaders)
     (leaders, edges)
   }
 
-  def eachComponentIsARingWithVerticesConnectedBy[T](t: T): ComponentFn[T] = { leaders =>
+  def eachComponentIsARing: ComponentFn = { leaders =>
     val edges = new ArrayBuffer[Edge]()
     var last  = 0L
     for (leader <- leaders) {

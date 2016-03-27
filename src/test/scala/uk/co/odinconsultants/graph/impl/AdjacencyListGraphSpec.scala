@@ -9,15 +9,17 @@ class AdjacencyListGraphSpec extends WordSpec with Matchers {
 
   "graph represented as an adjacency list" should {
     "obey laws of graphs" in {
-      val (leaders, edges)  = makeASCCGraphWith(10, componentsConnectedBy("owns"), and(eachComponentIsARingWithVerticesConnectedBy("owns")))
+      val (leaders, edges)  = makeAGraphWith(10, stronglyConnectedComponents, and(eachComponentIsARing))
       val adjacencyList     = mappings(edges)
       withClue(asString(adjacencyList)) {
         adjacencyList should have size uniqueVertices(edges).size
-        adjacencyList foreach { associated =>
-          associated.length should be > 0
-        }
+        checkConnectedGraphFor(adjacencyList)
       }
     }
   }
 
+  def checkConnectedGraphFor(adjacencyList: Array[Array[VertexId]]): Unit =
+    adjacencyList foreach { associated =>
+      associated.length should be > 0
+    }
 }
