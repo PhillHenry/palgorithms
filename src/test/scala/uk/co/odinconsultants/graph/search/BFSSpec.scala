@@ -6,6 +6,7 @@ import uk.co.odinconsultants.graph.impl.{VertexId, AdjacencyListGraph}
 import uk.co.odinconsultants.graph.impl.GraphGenerator._
 
 import scala.annotation.tailrec
+import scala.concurrent.ExecutionContext
 
 class BFSSpec extends WordSpec with Matchers {
 
@@ -13,6 +14,8 @@ class BFSSpec extends WordSpec with Matchers {
     "have topological sort corresponding to its leaders" in {
       val (leaders, edges)  = makeAGraphWith(10, stronglyConnectedComponents, and(eachComponentIsARing))
       val graph             = AdjacencyListGraph(edges)
+
+      implicit val xc = ExecutionContext.global
       val sorted            = BFS.topologicalSort(graph, 1)
 
       withClue(asString(graph) + sorted.groupBy(x => x).filter(_._2.size > 1)) {
