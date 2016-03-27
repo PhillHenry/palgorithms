@@ -5,6 +5,7 @@ import uk.co.odinconsultants.graph.Graph
 import uk.co.odinconsultants.graph.impl.VertexId
 
 import scala.annotation.tailrec
+import scala.collection.immutable.Seq
 
 object BFS {
 

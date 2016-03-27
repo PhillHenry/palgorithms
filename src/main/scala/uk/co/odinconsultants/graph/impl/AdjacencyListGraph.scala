@@ -4,9 +4,11 @@ import uk.co.odinconsultants.graph.Graph
 
 import scala.annotation.tailrec
 
+import scala.collection.immutable.Seq
+
 class AdjacencyListGraph(private [AdjacencyListGraph] val adjacencyList: Array[Array[VertexId]]) extends Graph {
 
-  override def neighboursOf(vertexId: VertexId): Seq[VertexId] = adjacencyList(vertexId.toInt)
+  override def neighboursOf(vertexId: VertexId): Seq[VertexId] = adjacencyList(vertexId.toInt).to[Seq]
 
   override def numberOfVertices: Long = adjacencyList.length.toLong
 }
