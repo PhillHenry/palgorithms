@@ -20,12 +20,16 @@ object BFS {
     def bfs(toExpore: Seq[VertexId]): Unit = {
       if (toExpore.nonEmpty) {
         val next = toExpore.head
-        if (!alreadySeen.set(next.toLong)) {
+        if (alreadySeen.set(next.toLong)) {
           bfs(toExpore.tail ++ g.neighboursOf(next))
+        } else {
+          bfs(toExpore.tail)
         }
       }
     }
-    bfs(g.neighboursOf(start))
+    if (alreadySeen.set(start)) {
+      bfs(g.neighboursOf(start))
+    }
   }
 
   def parallelTopologicalSort(g: Graph, start: VertexId)(implicit xc: ExecutionContext): Seq[VertexId] = {

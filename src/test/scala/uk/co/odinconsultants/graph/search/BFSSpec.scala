@@ -14,10 +14,15 @@ import scala.concurrent.ExecutionContext
 class BFSSpec extends WordSpec with Matchers {
 
   "search" should {
-    "hit all components when starting from the root" ignore new GraphFixture {
-      val alreadySeen = new AtomicBitSet(graph.numberOfVertices.toInt)
-      search(graph, 2, alreadySeen)
-      alreadySeen.isEverythingSet shouldBe true
+    "hit all components when starting from the root" in new GraphFixture {
+      val numVertices = graph.numberOfVertices.toInt
+      val alreadySeen = new AtomicBitSet(numVertices)
+
+      search(graph, leaders.head, alreadySeen)
+
+      withClue((0 to numVertices).filterNot(alreadySeen.get(_)).mkString(", ")) {
+        alreadySeen.isEverythingSet shouldBe true
+      }
     }
   }
 
