@@ -16,7 +16,7 @@ class BFSSpec extends WordSpec with Matchers {
       val graph             = AdjacencyListGraph(edges)
 
       implicit val xc = ExecutionContext.global
-      val sorted            = BFS.topologicalSort(graph, 1)
+      val sorted            = BFS.parallelTopologicalSort(graph, 1)
 
       withClue(asString(graph) + sorted.groupBy(x => x).filter(_._2.size > 1)) {
         sorted.toSet should have size sorted.size

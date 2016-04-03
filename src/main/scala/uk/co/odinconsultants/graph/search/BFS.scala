@@ -1,6 +1,5 @@
 package uk.co.odinconsultants.graph.search
 
-import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeUnit.SECONDS
 
 import uk.co.odinconsultants.bitset.AtomicBitSet
@@ -12,11 +11,11 @@ import scala.collection.immutable.Seq
 import scala.concurrent.Await.result
 import scala.concurrent.Future.sequence
 import scala.concurrent.duration.Duration
-import scala.concurrent.{ExecutionContext, Await, Future}
+import scala.concurrent.{ExecutionContext, Future}
 
 object BFS {
 
-  def topologicalSort(g: Graph, start: VertexId)(implicit xc: ExecutionContext): Seq[VertexId] = {
+  def parallelTopologicalSort(g: Graph, start: VertexId)(implicit xc: ExecutionContext): Seq[VertexId] = {
 
     val alreadySeen = new AtomicBitSet(g.numberOfVertices.toInt)
 
@@ -36,6 +35,25 @@ object BFS {
 
         val children  = result(sequence(futures), Duration(1, SECONDS)).flatten
         bfs(children, order)
+      }
+    }
+
+    alreadySeen.set(start)
+    bfs(g.neighboursOf(start), Seq(start))
+  }
+
+  def topologicalSort(g: Graph, start: VertexId): Seq[VertexId] = {
+
+    val alreadySeen = new AtomicBitSet(g.numberOfVertices.toInt)
+
+    @tailrec
+    def bfs(toSort: Seq[VertexId], seenSoFar: Seq[VertexId]): Seq[VertexId] = {
+      if (toSort.isEmpty) {
+        seenSoFar
+      } else {
+        val toPursue = toSort.filter(vertexId => alreadySeen.set(vertexId))
+        val children = toPursue.flatMap(g.neighboursOf)
+        bfs(children, seenSoFar ++ toPursue)
       }
     }
 
