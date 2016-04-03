@@ -7,10 +7,22 @@ import java.util.concurrent.atomic.AtomicIntegerArray;
  */
 public class AtomicBitSet {
     private final AtomicIntegerArray array;
+    private final int bitSetSize;
 
     public AtomicBitSet(int length) {
-        int intLength = (length + 31) / 32;
-        array = new AtomicIntegerArray(intLength);
+        bitSetSize      = length;
+        int intLength   = (length + 31) / 32;
+        array           = new AtomicIntegerArray(intLength);
+    }
+
+    public boolean isEverythingSet() {
+        for (int i = 0 ; i < array.length() - 2 ; i++) {
+            if (array.get(i) != ~0) return false;
+        }
+        int spill   = bitSetSize % 32;
+        int mask    = (1 << (spill + 1)) - 1;
+        if (array.get(array.length() - 1) != mask) return true;
+        return true;
     }
 
     /**

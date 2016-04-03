@@ -15,6 +15,13 @@ import scala.concurrent.{ExecutionContext, Future}
 
 object BFS {
 
+  def search(g: Graph, start: VertexId, alreadySeen: AtomicBitSet): Unit = {
+    def bfs(toExpore: Seq[VertexId]): Unit = {
+      ???
+    }
+    bfs(g.neighboursOf(start))
+  }
+
   def parallelTopologicalSort(g: Graph, start: VertexId)(implicit xc: ExecutionContext): Seq[VertexId] = {
 
     val alreadySeen = new AtomicBitSet(g.numberOfVertices.toInt)
