@@ -6,6 +6,7 @@
   <version>1.0-SNAPSHOT</version>
   <properties>
     <scala.version>2.11.7</scala.version>
+    <jmh.version>1.11.3</jmh.version>
   </properties>
 
   <build>
@@ -55,18 +56,23 @@
       <version>2.2.1</version>
       <scope>test</scope>
     </dependency>
+    <!--<dependency>-->
+      <!--<groupId>org.scalacheck</groupId>-->
+      <!--<artifactId>scalacheck_2.11</artifactId>-->
+      <!--<version>1.13.0</version>-->
+      <!--<scope>test</scope>-->
+    <!--</dependency>-->
+    <dependency>
+      <groupId>org.openjdk.jmh</groupId>
+      <artifactId>jmh-core</artifactId>
+      <version>${jmh.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.openjdk.jmh</groupId>
+      <artifactId>jmh-generator-annprocess</artifactId>
+      <version>${jmh.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
-<!--
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.scala-tools</groupId>
-        <artifactId>maven-scala-plugin</artifactId>
-        <configuration>
-          <scalaVersion>${scala.version}</scalaVersion>
-        </configuration>
-      </plugin>
-    </plugins>
-  </reporting>
-  -->
 </project>
