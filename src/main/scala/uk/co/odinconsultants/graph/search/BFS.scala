@@ -16,8 +16,14 @@ import scala.concurrent.{ExecutionContext, Future}
 object BFS {
 
   def search(g: Graph, start: VertexId, alreadySeen: AtomicBitSet): Unit = {
+    @tailrec
     def bfs(toExpore: Seq[VertexId]): Unit = {
-      ???
+      if (toExpore.nonEmpty) {
+        val next = toExpore.head
+        if (!alreadySeen.set(next.toLong)) {
+          bfs(toExpore.tail ++ g.neighboursOf(next))
+        }
+      }
     }
     bfs(g.neighboursOf(start))
   }

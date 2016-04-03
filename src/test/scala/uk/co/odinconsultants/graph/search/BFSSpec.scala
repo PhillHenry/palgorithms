@@ -6,7 +6,7 @@ import org.scalatest.{Matchers, WordSpec}
 import uk.co.odinconsultants.bitset.AtomicBitSet
 import uk.co.odinconsultants.graph.impl.AdjacencyListGraph.asString
 import uk.co.odinconsultants.graph.impl.GraphGenerator._
-import uk.co.odinconsultants.graph.search.BFS.parallelTopologicalSort
+import uk.co.odinconsultants.graph.search.BFS.{search, parallelTopologicalSort}
 
 import scala.concurrent.ExecutionContext
 
@@ -16,7 +16,8 @@ class BFSSpec extends WordSpec with Matchers {
   "search" should {
     "hit all components when starting from the root" ignore new GraphFixture {
       val alreadySeen = new AtomicBitSet(graph.numberOfVertices.toInt)
-      BFS.search(graph, 1, alreadySeen)
+      search(graph, 2, alreadySeen)
+      alreadySeen.isEverythingSet shouldBe true
     }
   }
 
