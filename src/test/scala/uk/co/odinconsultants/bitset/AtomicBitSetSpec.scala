@@ -16,7 +16,7 @@ class AtomicBitSetSpec extends WordSpec with Matchers {
       val propSmallInteger = forAll(smallInteger) { n =>
         val toTest = new AtomicBitSet(n)
         for (i <- 0 to n) toTest.set(i.toLong)
-        toTest.isEverythingSet()
+        toTest.isEverythingSet
       }
     }
   }

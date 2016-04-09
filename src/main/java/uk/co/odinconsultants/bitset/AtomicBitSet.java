@@ -43,6 +43,10 @@ public class AtomicBitSet {
         }
     }
 
+    public boolean apply(long n) {
+        return set(n);
+    }
+
     public boolean get(long n) {
         int bit = 1 << n;
         int idx = (int) (n >>> 5);

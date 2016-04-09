@@ -6,7 +6,7 @@ import org.scalatest.{Matchers, WordSpec}
 import uk.co.odinconsultants.bitset.AtomicBitSet
 import uk.co.odinconsultants.graph.impl.AdjacencyListGraph.asString
 import uk.co.odinconsultants.graph.impl.GraphGenerator._
-import uk.co.odinconsultants.graph.search.BFS.{search, parallelTopologicalSort}
+import uk.co.odinconsultants.graph.search.BFS.{search, parallelPath}
 
 import scala.concurrent.ExecutionContext
 
@@ -29,7 +29,7 @@ class BFSSpec extends WordSpec with Matchers {
   "Strongly-connected component graph" should {
     "have topological sort corresponding to its leaders" in new GraphFixture {
       implicit val xc     = ExecutionContext.global
-      val sortedVertices  = parallelTopologicalSort(graph, 1)
+      val sortedVertices  = parallelPath(graph, 1)
 
       withClue(asString(graph) + sortedVertices.groupBy(x => x).filter(_._2.size > 1)) {
         sortedVertices.toSet should have size sortedVertices.size

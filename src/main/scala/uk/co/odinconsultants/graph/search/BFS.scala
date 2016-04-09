@@ -17,22 +17,22 @@ object BFS {
 
   def search(g: Graph, start: VertexId, alreadySeen: AtomicBitSet): Unit = {
     @tailrec
-    def bfs(toExpore: Seq[VertexId]): Unit = {
-      if (toExpore.nonEmpty) {
-        val next = toExpore.head
-        if (alreadySeen.set(next.toLong)) {
-          bfs(toExpore.tail ++ g.neighboursOf(next))
+    def bfs(toExplore: Seq[VertexId]): Unit = {
+      if (toExplore.nonEmpty) {
+        val next = toExplore.head
+        if (alreadySeen(next.toLong)) {
+          bfs(toExplore.tail ++ g.neighboursOf(next))
         } else {
-          bfs(toExpore.tail)
+          bfs(toExplore.tail)
         }
       }
     }
-    if (alreadySeen.set(start)) {
+    if (alreadySeen(start)) {
       bfs(g.neighboursOf(start))
     }
   }
 
-  def parallelTopologicalSort(g: Graph, start: VertexId)(implicit xc: ExecutionContext): Seq[VertexId] = {
+  def parallelPath(g: Graph, start: VertexId)(implicit xc: ExecutionContext): Seq[VertexId] = {
 
     val alreadySeen = new AtomicBitSet(g.numberOfVertices.toInt)
 
@@ -59,7 +59,7 @@ object BFS {
     bfs(g.neighboursOf(start), Seq(start))
   }
 
-  def topologicalSort(g: Graph, start: VertexId): Seq[VertexId] = {
+  def path(g: Graph, start: VertexId): Seq[VertexId] = {
 
     val alreadySeen = new AtomicBitSet(g.numberOfVertices.toInt)
 

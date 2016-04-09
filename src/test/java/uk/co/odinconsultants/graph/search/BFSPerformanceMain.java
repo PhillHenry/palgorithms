@@ -24,13 +24,13 @@ public class BFSPerformanceMain {
     @Benchmark
     @Fork(1)
     public void bfsTopologicalOrderingMultiThreaded() {
-        BFS.parallelTopologicalSort(graph, 1L, xc);
+        BFS.parallelPath(graph, 1L, xc);
     }
 
     @Benchmark
     @Fork(1)
     public void bfsTopologicalOrdering() {
-        BFS.topologicalSort(graph, 1L);
+        BFS.path(graph, 1L);
     }
 
     public static void main(String[] args) throws RunnerException {
