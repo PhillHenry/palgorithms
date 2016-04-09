@@ -2,7 +2,7 @@ package uk.co.odinconsultants.graph.search
 
 import java.util.concurrent.TimeUnit.SECONDS
 
-import uk.co.odinconsultants.bitset.AtomicBitSet
+import uk.co.odinconsultants.bitset.{AlreadySeen, AtomicBitSet}
 import uk.co.odinconsultants.graph.Graph
 import uk.co.odinconsultants.graph.impl.VertexId
 
@@ -15,7 +15,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 object BFS {
 
-  def search(g: Graph, start: VertexId, alreadySeen: AtomicBitSet): Unit = {
+  def search(g: Graph, start: VertexId, alreadySeen: (VertexId) => Boolean): Unit = {
     @tailrec
     def bfs(toExplore: Seq[VertexId]): Unit = {
       if (toExplore.nonEmpty) {
@@ -34,14 +34,14 @@ object BFS {
 
   def parallelPath(g: Graph, start: VertexId)(implicit xc: ExecutionContext): Seq[VertexId] = {
 
-    val alreadySeen = new AtomicBitSet(g.numberOfVertices.toInt)
+    val alreadySeen = AlreadySeen(g.numberOfVertices.toInt)
 
     @tailrec
     def bfs(toSort: Seq[VertexId], seenSoFar: Seq[VertexId]): Seq[VertexId] = {
       if (toSort.isEmpty) {
         seenSoFar
       } else {
-        val toPursue  = toSort.filter(vertexId => alreadySeen.set(vertexId))
+        val toPursue  = toSort.filter(vertexId => alreadySeen(vertexId))
         val order     = seenSoFar ++ toPursue
 
         val futures   = toPursue.map { newVertexId =>
@@ -55,26 +55,26 @@ object BFS {
       }
     }
 
-    alreadySeen.set(start)
+    alreadySeen(start)
     bfs(g.neighboursOf(start), Seq(start))
   }
 
   def path(g: Graph, start: VertexId): Seq[VertexId] = {
 
-    val alreadySeen = new AtomicBitSet(g.numberOfVertices.toInt)
+    val alreadySeen = AlreadySeen(g.numberOfVertices.toInt)
 
     @tailrec
     def bfs(toSort: Seq[VertexId], seenSoFar: Seq[VertexId]): Seq[VertexId] = {
       if (toSort.isEmpty) {
         seenSoFar
       } else {
-        val toPursue = toSort.filter(vertexId => alreadySeen.set(vertexId))
+        val toPursue = toSort.filter(vertexId => alreadySeen(vertexId))
         val children = toPursue.flatMap(g.neighboursOf)
         bfs(children, seenSoFar ++ toPursue)
       }
     }
 
-    alreadySeen.set(start)
+    alreadySeen(start)
     bfs(g.neighboursOf(start), Seq(start))
   }
 

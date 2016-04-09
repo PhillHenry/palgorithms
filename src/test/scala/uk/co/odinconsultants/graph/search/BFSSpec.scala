@@ -4,6 +4,7 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{Matchers, WordSpec}
 import uk.co.odinconsultants.bitset.AtomicBitSet
+import uk.co.odinconsultants.bitset.AlreadySeen._
 import uk.co.odinconsultants.graph.impl.AdjacencyListGraph.asString
 import uk.co.odinconsultants.graph.impl.GraphGenerator._
 import uk.co.odinconsultants.graph.search.BFS.{search, parallelPath}

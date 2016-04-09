@@ -12,7 +12,7 @@ class AdjacencyListGraphSpec extends WordSpec with Matchers {
 
   "graph represented as an adjacency list" should {
     "obey laws of graphs" in {
-      val (leaders, edges)  = makeAGraphWith(10, stronglyConnectedComponents, and(eachComponentIsARing))
+      val (_, edges)  = makeAGraphWith(10, stronglyConnectedComponents, and(eachComponentIsARing))
       val adjacencyList     = mappings(edges)
       withClue(asString(adjacencyList)) {
         adjacencyList should have size uniqueVertices(edges).size
