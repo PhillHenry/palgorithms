@@ -32,7 +32,7 @@ object AdjacencyListGraph {
         val edge      = edges.head
         val key       = edge._1
         val adjacent  = graphMappings(key)
-        populate(edges.tail, graphMappings + (key -> (adjacent :+ edge._2)))
+        populate(edges.tail, graphMappings + (key -> (edge._2 +: adjacent)))
       }
 
     }
