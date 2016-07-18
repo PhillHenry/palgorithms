@@ -17,10 +17,10 @@ object AdjacencyListGraph {
 
 
   def apply(edges: Seq[Edge]): AdjacencyListGraph = {
-    new AdjacencyListGraph(mappings(edges))
+    new AdjacencyListGraph(adjacencyListFrom(edges))
   }
 
-  def mappings(edges: Seq[Edge]): Array[Array[VertexId]] = {
+  def adjacencyListFrom(edges: Seq[Edge]): Array[Array[VertexId]] = {
 
     type GraphMappings = Map[VertexId, List[VertexId]]
 
