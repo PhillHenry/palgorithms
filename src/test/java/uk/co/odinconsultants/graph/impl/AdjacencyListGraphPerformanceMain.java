@@ -14,7 +14,7 @@ import static uk.co.odinconsultants.performance.StandardPerfTest.run;
 public class AdjacencyListGraphPerformanceMain {
 
     static private Tuple2 graphTuple  = makeAGraphWith(100,stronglyConnectedComponents(), eachComponentIsARing());
-    
+
     @Benchmark
     @Fork(1)
     public void bfsTopologicalOrdering() {
@@ -22,6 +22,6 @@ public class AdjacencyListGraphPerformanceMain {
     }
 
     public static void main(String[] args) throws RunnerException {
-        run(AdjacencyListGraphPerformanceMain.class.getSimpleName());
+        run(AdjacencyListGraphPerformanceMain.class);
     }
 }

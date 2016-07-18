@@ -32,7 +32,7 @@ public class BFSPerformanceMain {
     }
 
     public static void main(String[] args) throws RunnerException {
-        run(BFSPerformanceMain.class.getSimpleName());
+        run(BFSPerformanceMain.class);
     }
 
 }

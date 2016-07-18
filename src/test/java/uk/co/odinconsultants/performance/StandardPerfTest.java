@@ -6,9 +6,9 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 public class StandardPerfTest {
-    public static void run(String clazz) throws RunnerException {
+    public static void run(Class clazz) throws RunnerException {
         Options opt = new OptionsBuilder()
-                .include(clazz)
+                .include(clazz.getSimpleName())
                 .forks(1)
                 .measurementBatchSize(3)
                 .measurementIterations(3)
